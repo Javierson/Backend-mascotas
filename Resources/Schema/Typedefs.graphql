@@ -1,0 +1,126 @@
+
+
+type Query {
+
+
+    "Verifica si el servidor reponde"
+    _: Boolean!
+
+    "Muestra un listado de actividad de registros de mascotas recientes"
+    getHomeData (Cantidad: PositiveInt!): [ Registro ]
+
+    getMascota (ID: ObjectID!): Mascota
+    getMascotas (Query: QueryInput!): [ Mascota ]
+
+    getRaza (ID: ObjectID!): Raza
+    getRazas (Query: QueryInput!): [ Raza ]
+
+    getMascotasQuantity: Int!
+    getRazasQuantity: Int!
+
+
+}
+
+
+type Mutation {
+
+
+    "Verifica si las modificaciones responden"
+    _: Boolean!
+
+    createMascota (Mascota: MascotaInput!): Mascota
+    updateMascota (ID: ObjectID! Mascota: MascotaOptionalInput!): Mascota
+    deleteMascota (ID: ObjectID!): Mascota
+
+    createRaza (Nombre: NonEmptyString!): Raza
+    updateRaza (ID: ObjectID! Nombre: NonEmptyString!): Raza
+    deleteRaza (ID: ObjectID!): Raza
+
+}
+
+
+scalar ObjectID scalar Timestamp scalar URL scalar Date scalar BigInt scalar NonEmptyString scalar EmailAddress scalar PositiveInt scalar NonNegativeInt scalar PositiveFloat
+
+
+input QueryInput {
+
+    Limit: PositiveInt!
+    OffSet: NonNegativeInt
+
+}
+
+
+type Token {
+
+    Email: NonEmptyString!
+    Password: NonEmptyString!
+    Token: NonEmptyString!
+
+}
+
+
+type TokenData {
+
+    Email: EmailAddress!
+    iat: Timestamp!
+    exp: Timestamp!
+
+}
+
+
+type Registro {
+
+    ID: ID
+    UserImage: String
+    FullName: String
+    PetImage: String
+    PetName: String
+
+}
+
+
+type Mascota {
+
+    id: ObjectID!
+    Nombre: NonEmptyString!
+    RazaID: Raza
+    Edad: NonNegativeInt!
+    Genero: Boolean!
+    Foto: URL!
+    createdAt: Timestamp!
+    updatedAt: Timestamp
+
+}
+
+
+input MascotaInput {
+
+    Nombre: NonEmptyString!
+    RazaID: ObjectID!
+    Edad: NonNegativeInt!
+    Genero: Boolean!
+    "Debe de empezar con el siguiente formato para ser valido http:// o https://"
+    Foto: String!
+
+}
+
+
+input MascotaOptionalInput {
+
+    Nombre: NonEmptyString
+    RazaID: ObjectID
+    Edad: NonNegativeInt
+    Genero: Boolean
+    "Debe de empezar con el siguiente formato para ser valido http:// o https://"
+    Foto: String
+
+}
+
+
+type Raza {
+
+    id: ObjectID!
+    Nombre: NonEmptyString!
+
+}
+
